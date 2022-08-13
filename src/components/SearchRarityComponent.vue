@@ -7,6 +7,7 @@
       v-on:input="searchRarity()"
       v-on:focus="showAuto()"
     /><button v-on:click='delInput()'>&#128465;</button>
+    <span> {{toSearch}} </span>
     <ul class="autocomplete-results" id="autoRare">
       <li
         class="autocomplete-result"
@@ -27,7 +28,7 @@
 export default {
   methods: {
     searchRarity() {
-      this.$emit("searchRarity", this.value);
+      this.raritiesArr=this.rarities.filter(rare => rare.value.includes(this.value));
     },
     showAuto() {
       document.getElementById("autoRare").style.visibility = "visible";
@@ -36,12 +37,12 @@ export default {
     //     document.getElementById('autoName').style.visibility='hidden';
     // },
     delInput() {
-        this.value='';
-        this.$emit("searchRarity", this.value);
+        this.toSearch='';
+        this.$emit("searchRarity", this.toSearch);
     },
     autoName(name) {
-      this.value = name;
-      this.$emit("searchRarity", this.value);
+      this.toSearch = name;
+      this.$emit("searchRarity", this.toSearch);
     },
   },
   created() {},
@@ -50,6 +51,7 @@ export default {
       value: "",
       auto: [],
       raritiesArr: this.rarities,
+      toSearch:''
     };
   },
   components: {},

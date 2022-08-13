@@ -4,9 +4,11 @@
     <input
       type="text"
       v-model="value"
-      v-on:click="searchName()"
+      v-on:click="searchType()"
+      v-on:input='autoType()'
       v-on:focus="showAuto()"
     /><button v-on:click='delInput()'>&#128465;</button>
+    <span> {{toSearch}} </span>
     <ul class="autocomplete-results" id="autoType">
       <li
         class="autocomplete-result"
@@ -27,11 +29,19 @@
 import axios from "axios";
 export default {
   methods: {
-    searchName() {
+    searchType() {
       axios
         .get("https://api.magicthegathering.io/v1/types")
         .then((response) => {
           this.auto = JSON.parse(response.request.response).types;
+        });
+    },
+    autoType() {
+        axios
+        .get("https://api.magicthegathering.io/v1/types")
+        .then((response) => {
+          this.auto = JSON.parse(response.request.response).types;
+          this.auto = this.auto.filter(word => word.includes(this.value));
         });
     },
     showAuto() {
@@ -41,18 +51,19 @@ export default {
     //     document.getElementById('autoName').style.visibility='hidden';
     // },
     delInput() {
-        this.value='';
-        this.$emit("searchType", this.value);
+        this.toSearch='';
+        this.$emit("searchType", this.toSearch);
     },
     autoName(name) {
-      this.value += name + ",";
-      this.$emit("searchType", this.value);
+      this.toSearch += name + ",";
+      this.$emit("searchType", this.toSearch);
     },
   },
   data() {
     return {
       value: "",
       auto: [],
+      toSearch :'',
     };
   },
   components: {},
