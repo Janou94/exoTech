@@ -6,7 +6,7 @@
       v-model="value"
       v-on:click="searchName()"
       v-on:focus="showAuto()"
-    />
+    /><button v-on:click='delInput()'>&#128465;</button>
     <ul class="autocomplete-results" id="autoType">
       <li
         class="autocomplete-result"
@@ -28,7 +28,6 @@ import axios from "axios";
 export default {
   methods: {
     searchName() {
-      //this.$emit('searchName', this.value)
       axios
         .get("https://api.magicthegathering.io/v1/types")
         .then((response) => {
@@ -41,6 +40,10 @@ export default {
     // hideAuto() {
     //     document.getElementById('autoName').style.visibility='hidden';
     // },
+    delInput() {
+        this.value='';
+        this.$emit("searchType", this.value);
+    },
     autoName(name) {
       this.value += name + ",";
       this.$emit("searchType", this.value);

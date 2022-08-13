@@ -6,7 +6,7 @@
       v-model="value"
       v-on:input="searchRarity()"
       v-on:focus="showAuto()"
-    />
+    /><button v-on:click='delInput()'>&#128465;</button>
     <ul class="autocomplete-results" id="autoRare">
       <li
         class="autocomplete-result"
@@ -35,6 +35,10 @@ export default {
     // hideAuto() {
     //     document.getElementById('autoName').style.visibility='hidden';
     // },
+    delInput() {
+        this.value='';
+        this.$emit("searchRarity", this.value);
+    },
     autoName(name) {
       this.value = name;
       this.$emit("searchRarity", this.value);
