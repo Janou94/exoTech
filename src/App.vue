@@ -1,137 +1,161 @@
 <template>
   <div id="app">
-    <div class='inputContainer'>
-      <span><SearchNameComponent @searchName='searchName'></SearchNameComponent></span>
-      <span><SearchTypeComponent @searchType='searchType'></SearchTypeComponent></span>
-      <span><SearchRarityComponent @searchRarity='searchRarity' v-bind:rarities='this.rarities'></SearchRarityComponent></span>
+    <div class="inputContainer">
+      <span
+        ><SearchNameComponent @searchName="searchName"></SearchNameComponent
+      ></span>
+      <span
+        ><SearchTypeComponent @searchType="searchType"></SearchTypeComponent
+      ></span>
+      <span
+        ><SearchRarityComponent
+          @searchRarity="searchRarity"
+          v-bind:rarities="this.rarities"
+        ></SearchRarityComponent
+      ></span>
     </div>
-    <div class='flex'>
-      <div class='cardBlock' v-bind:key='card.id' v-for='card in cards' :style="{ 'background-color': rarities[rarities.findIndex(
-                    element => element.value === card.rarity)].color }">
-          <h1 class='cardTitle'> {{card.name}} </h1>
-          <span> {{card.text}} </span>
-          <span> {{card.type}} </span>
-          <span> {{card.rarity}} </span>
+    <div class="flex">
+      <div
+        class="cardBlock"
+        v-bind:key="card.id"
+        v-for="card in cards"
+        :style="{
+          'background-color':
+            rarities[
+              rarities.findIndex((element) => element.value === card.rarity)
+            ].color,
+        }"
+      >
+        <h1 class="cardTitle">{{ card.name }}</h1>
+        <span> {{ card.text }} </span>
+        <span> {{ card.type }} </span>
+        <span> {{ card.rarity }} </span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
-import SearchNameComponent from './components/SearchNameComponent.vue'
-import SearchRarityComponent from './components/SearchRarityComponent.vue'
-import SearchTypeComponent from './components/SearchTypeComponent.vue'
+import axios from "axios";
+import SearchNameComponent from "./components/SearchNameComponent.vue";
+import SearchRarityComponent from "./components/SearchRarityComponent.vue";
+import SearchTypeComponent from "./components/SearchTypeComponent.vue";
 
 const rarities = [
-  { value: 'Common', color: '#2e2e2e' },
-  { value: 'Uncommon', color: '#ababab' },
-  { value: 'Rare', color: '#ffca00' },
-  { value: 'Mythic Rare', color: '#ff8600' },
-  { value: 'Special', color: '#fd6ee1' },
-  { value: 'Basic Land', color: '#000000' },
+  { value: "Common", color: "#2e2e2e" },
+  { value: "Uncommon", color: "#ababab" },
+  { value: "Rare", color: "#ffca00" },
+  { value: "Mythic Rare", color: "#ff8600" },
+  { value: "Special", color: "#fd6ee1" },
+  { value: "Basic Land", color: "#000000" },
 ];
 
 export default {
   data() {
     return {
-      cards:[],
-      rarities:[],
-      apiType:'',
-      apiRarity:'',
-      apiName:'',
-    }
+      cards: [],
+      rarities: [],
+      apiType: "",
+      apiRarity: "",
+      apiName: "",
+    };
   },
   created() {
     axios
-      .get('https://api.magicthegathering.io/v1/cards?pageSize=30')
+      .get("https://api.magicthegathering.io/v1/cards?pageSize=30")
       .then((response) => {
-        this.cards = JSON.parse(response.request.response).cards
+        this.cards = JSON.parse(response.request.response).cards;
       }),
-      this.rarities=rarities;
+      (this.rarities = rarities);
   },
-  name: 'App',
-  components : {
+  name: "App",
+  components: {
     SearchNameComponent,
     SearchRarityComponent,
     SearchTypeComponent,
   },
   methods: {
     searchName(value) {
-      this.apiName=value
+      this.apiName = value;
       this.refreshApi();
     },
     searchRarity(value) {
-      this.apiRarity=value
+      this.apiRarity = value;
       this.refreshApi();
     },
     searchType(value) {
-      this.apiType=value
+      this.apiType = value;
       this.refreshApi();
     },
     refreshApi() {
-            axios
-              .get('https://api.magicthegathering.io/v1/cards?pageSize=30&types='+this.apiType+'&name='+this.apiName+'&rarity='+this.apiRarity)
-              .then((response) => {
-                this.cards = JSON.parse(response.request.response).cards
-              })
-      this.rarities=rarities;
-    }
-  }
-
-}
-
-
+      axios
+        .get(
+          "https://api.magicthegathering.io/v1/cards?pageSize=30&types=" +
+            this.apiType +
+            "&name=" +
+            this.apiName +
+            "&rarity=" +
+            this.apiRarity
+        )
+        .then((response) => {
+          this.cards = JSON.parse(response.request.response).cards;
+        });
+      this.rarities = rarities;
+    },
+  },
+};
 </script>
 
 <style>
 .inputContainer {
-  margin-bottom:200px;
+  margin-bottom: 200px;
   display: flex;
   flex-direction: revert;
   justify-content: space-around;
 }
 a {
-  color:#fafafa;
+  color: #fafafa;
   text-decoration: none;
-  font-weight:bolder;
-  padding:5px;
+  font-weight: bolder;
+  padding: 5px;
 }
 
-button, input[type="submit"], input[type="reset"] {
-	background: none;
-	color: inherit;
-	border: none;
-	padding: 0;
-	font: inherit;
-	cursor: pointer;
-	outline: inherit;
+button,
+input[type="submit"],
+input[type="reset"] {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
 }
 input[type="text"] {
-	background: none;
-	color: inherit;
-	border: none;
-	padding: 0;
-	outline: inherit;
-  background-color:#fafafa;
-  border-radius:5px;
-  height:50px;
-  width:200px;
-  color:black;
-  margin-top:10px;
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  outline: inherit;
+  background-color: #fafafa;
+  border-radius: 5px;
+  height: 50px;
+  width: 200px;
+  color: black;
+  margin-top: 10px;
 }
 span {
-  font-size:20px;
+  font-size: 20px;
   font-weight: bold;
 }
 
 html {
-  background-color:black;
+  background-color: black;
   color: #fafafa;
-  height:100%
+  height: 100%;
 }
 body {
-  height:100%
+  height: 100%;
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -139,36 +163,34 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  background-color:black;
+  background-color: black;
   color: #fafafa;
-  height:100%;
+  height: 100%;
 }
 .flex {
-  display:flex;
+  display: flex;
   justify-content: space-around;
-  width:100%;
-  flex-wrap:wrap;
-  gap:50px
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 50px;
 }
 .flex2 {
-  display:flex;
+  display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width:100%
+  width: 100%;
 }
 
 .cardBlock {
   display: flex;
   flex-direction: column;
-  height:800px;
-  width:400px;
-  position:relative;
-  border-radius:20px;
-  justify-content:space-between
+  height: 800px;
+  width: 400px;
+  position: relative;
+  border-radius: 20px;
+  justify-content: space-between;
 }
 
 .cardTitle {
-
 }
-
 </style>
