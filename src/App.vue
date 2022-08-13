@@ -14,6 +14,7 @@
         ></SearchRarityComponent
       ></span>
     </div>
+        <div class='paginator'> <button v-on:click='prevPage()' v-if="page>1"> &#x3c; </button> {{page}} <button v-on:click='nextPage()'> > </button> </div>
     <div class="flex">
       <div
         class="cardBlock"
@@ -58,6 +59,7 @@ export default {
       apiType: "",
       apiRarity: "",
       apiName: "",
+      page: 1,
     };
   },
   created() {
@@ -87,10 +89,18 @@ export default {
       this.apiType = value;
       this.refreshApi();
     },
+    prevPage() {
+      this.page-=1;
+      this.refreshApi();
+    },
+    nextPage() {
+      this.page+=1;
+      this.refreshApi();
+    },
     refreshApi() {
       axios
         .get(
-          "https://api.magicthegathering.io/v1/cards?pageSize=30&types=" +
+          "https://api.magicthegathering.io/v1/cards?pageSize=30&page="+this.page+"&types=" +
             this.apiType +
             "&name=" +
             this.apiName +
@@ -107,8 +117,13 @@ export default {
 </script>
 
 <style>
+.paginator {
+  margin-bottom:50px;
+  font-size:24px;
+  font-weight:bold
+}
 .inputContainer {
-  margin-bottom: 200px;
+  margin-top: 50px;
   display: flex;
   flex-direction: revert;
   justify-content: space-around;
