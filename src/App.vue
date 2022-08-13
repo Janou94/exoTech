@@ -36,7 +36,10 @@ export default {
   data() {
     return {
       cards:[],
-      rarities:[]
+      rarities:[],
+      apiType:'',
+      apiRarity:'',
+      apiName:'',
     }
   },
   created() {
@@ -55,27 +58,23 @@ export default {
   },
   methods: {
     searchName(value) {
-      axios
-      .get('https://api.magicthegathering.io/v1/cards?pageSize=30&name='+value)
-      .then((response) => {
-        this.cards = JSON.parse(response.request.response).cards
-      })
-      this.rarities=rarities;
+      this.apiName=value
+      this.refreshApi();
     },
     searchRarity(value) {
-      axios
-      .get('https://api.magicthegathering.io/v1/cards?pageSize=30&rarity='+value)
-      .then((response) => {
-        this.cards = JSON.parse(response.request.response).cards
-      })
-      this.rarities=rarities;
+      this.apiRarity=value
+      this.refreshApi();
     },
     searchType(value) {
-      axios
-      .get('https://api.magicthegathering.io/v1/cards?pageSize=30&types='+value)
-      .then((response) => {
-        this.cards = JSON.parse(response.request.response).cards
-      })
+      this.apiType=value
+      this.refreshApi();
+    },
+    refreshApi() {
+            axios
+              .get('https://api.magicthegathering.io/v1/cards?pageSize=30&types='+this.apiType+'&name='+this.apiName+'&rarity='+this.apiRarity)
+              .then((response) => {
+                this.cards = JSON.parse(response.request.response).cards
+              })
       this.rarities=rarities;
     }
   }
