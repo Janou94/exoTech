@@ -2,7 +2,7 @@
   <div id="app">
     <div class='inputContainer'>
       <span><SearchNameComponent @searchName='searchName'></SearchNameComponent></span>
-      <span><SearchTypeComponent @searchRarity='searchType'></SearchTypeComponent></span>
+      <span><SearchTypeComponent @searchType='searchType'></SearchTypeComponent></span>
       <span><SearchRarityComponent @searchRarity='searchRarity' v-bind:rarities='this.rarities'></SearchRarityComponent></span>
     </div>
     <div class='flex'>
@@ -21,6 +21,7 @@
 import axios from 'axios'
 import SearchNameComponent from './components/SearchNameComponent.vue'
 import SearchRarityComponent from './components/SearchRarityComponent.vue'
+import SearchTypeComponent from './components/SearchTypeComponent.vue'
 
 const rarities = [
   { value: 'Common', color: '#2e2e2e' },
@@ -49,7 +50,8 @@ export default {
   name: 'App',
   components : {
     SearchNameComponent,
-    SearchRarityComponent
+    SearchRarityComponent,
+    SearchTypeComponent,
   },
   methods: {
     searchName(value) {
@@ -63,6 +65,14 @@ export default {
     searchRarity(value) {
       axios
       .get('https://api.magicthegathering.io/v1/cards?pageSize=30&rarity='+value)
+      .then((response) => {
+        this.cards = JSON.parse(response.request.response).cards
+      })
+      this.rarities=rarities;
+    },
+    searchType(value) {
+      axios
+      .get('https://api.magicthegathering.io/v1/cards?pageSize=30&types='+value)
       .then((response) => {
         this.cards = JSON.parse(response.request.response).cards
       })
