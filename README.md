@@ -1,5 +1,5 @@
 Fonctionnalités :
-    Lister des cardes Magic the gathering
+    Lister des cartes Magic the gathering
     Les filtrer selon leurs types/noms/raretés
     Pagination
 
