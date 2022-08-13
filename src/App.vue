@@ -50,7 +50,6 @@ export default {
   },
   methods: {
     searchName(value) {
-      console.log(value)
       axios
       .get('https://api.magicthegathering.io/v1/cards?pageSize=30&name='+value)
       .then((response) => {
