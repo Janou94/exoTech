@@ -41,18 +41,16 @@ export default {
         .get("https://api.magicthegathering.io/v1/types")
         .then((response) => {
           this.auto = JSON.parse(response.request.response).types;
-          this.auto = this.auto.filter(word => word.includes(this.value));
+          this.auto = this.auto.filter(word => word.toLowerCase().includes(this.value.toLowerCase()));
         });
     },
     showAuto() {
       document.getElementById("autoType").style.visibility = "visible";
     },
-    // hideAuto() {
-    //     document.getElementById('autoName').style.visibility='hidden';
-    // },
     delInput() {
         this.toSearch='';
         this.$emit("searchType", this.toSearch);
+        document.getElementById('autoType').style.visibility='hidden';
     },
     autoName(name) {
       this.toSearch += name + ",";

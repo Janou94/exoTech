@@ -1,24 +1,12 @@
-# test
+Fonctionnalités :
+    Lister des cardes Magic the gathering
+    Les filtrer selon leurs types/noms/raretés
+    Pagination
 
-## Project setup
-```
+
+Pour lancer l'application : 
+
 npm install
-```
 
-### Compiles and hot-reloads for development
-```
 npm run serve
-```
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

@@ -28,17 +28,15 @@
 export default {
   methods: {
     searchRarity() {
-      this.raritiesArr=this.rarities.filter(rare => rare.value.includes(this.value));
+      this.raritiesArr=this.rarities.filter(rare => rare.value.toLowerCase().includes(this.value.toLowerCase()));
     },
     showAuto() {
       document.getElementById("autoRare").style.visibility = "visible";
     },
-    // hideAuto() {
-    //     document.getElementById('autoName').style.visibility='hidden';
-    // },
     delInput() {
         this.toSearch='';
         this.$emit("searchRarity", this.toSearch);
+        document.getElementById('autoRare').style.visibility='hidden';
     },
     autoName(name) {
       this.toSearch = name;
