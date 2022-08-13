@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <div class='inputContainer'>
-      <b>Nom :</b> <SearchNameComponent @searchName='searchName'></SearchNameComponent>
+      <span><SearchNameComponent @searchName='searchName'></SearchNameComponent></span>
+      <span><SearchTypeComponent @searchRarity='searchType'></SearchTypeComponent></span>
+      <span><SearchRarityComponent @searchRarity='searchRarity' v-bind:rarities='this.rarities'></SearchRarityComponent></span>
     </div>
     <div class='flex'>
       <div class='cardBlock' v-bind:key='card.id' v-for='card in cards' :style="{ 'background-color': rarities[rarities.findIndex(
@@ -18,6 +20,7 @@
 <script>
 import axios from 'axios'
 import SearchNameComponent from './components/SearchNameComponent.vue'
+import SearchRarityComponent from './components/SearchRarityComponent.vue'
 
 const rarities = [
   { value: 'Common', color: '#2e2e2e' },
@@ -39,19 +42,27 @@ export default {
     axios
       .get('https://api.magicthegathering.io/v1/cards?pageSize=30')
       .then((response) => {
-        //console.log(JSON.parse(response.request.response))
         this.cards = JSON.parse(response.request.response).cards
       }),
       this.rarities=rarities;
   },
   name: 'App',
   components : {
-    SearchNameComponent
+    SearchNameComponent,
+    SearchRarityComponent
   },
   methods: {
     searchName(value) {
       axios
       .get('https://api.magicthegathering.io/v1/cards?pageSize=30&name='+value)
+      .then((response) => {
+        this.cards = JSON.parse(response.request.response).cards
+      })
+      this.rarities=rarities;
+    },
+    searchRarity(value) {
+      axios
+      .get('https://api.magicthegathering.io/v1/cards?pageSize=30&rarity='+value)
       .then((response) => {
         this.cards = JSON.parse(response.request.response).cards
       })
@@ -67,6 +78,9 @@ export default {
 <style>
 .inputContainer {
   margin-bottom:200px;
+  display: flex;
+  flex-direction: revert;
+  justify-content: space-around;
 }
 a {
   color:#fafafa;

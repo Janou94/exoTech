@@ -1,9 +1,9 @@
 <template>
 <div style='width:200px'>
-    Name : <input type='text'  v-model='value' v-on:input="searchName()" v-on:focus="showAuto()">
-    <ul class="autocomplete-results" id='autoName'>
-      <li class="autocomplete-result" v-bind:key='suggest.id' v-for='suggest in auto' v-on:click="autoName(suggest.name)">
-            {{suggest.name}}
+    Rarity : <input type='text'  v-model='value' v-on:input="searchRarity()" v-on:focus="showAuto()">
+    <ul class="autocomplete-results" id='autoRare'>
+      <li class="autocomplete-result" v-bind:key='rare.value' v-for='rare in raritiesArr' v-on:click="autoName(rare.value)">
+            {{rare.value}}
       </li>
     </ul>
 </div>
@@ -13,38 +13,36 @@
 
 
 <script>
-        import axios from 'axios';
         export default  {
             methods: {
-                searchName() {
-                    //this.$emit('searchName', this.value)
-                    axios
-                        .get('https://api.magicthegathering.io/v1/cards?pageSize=5&name='+this.value)
-                        .then((response) => {
-                            this.auto = JSON.parse(response.request.response).cards
-                        })
+                searchRarity() {
+                    this.$emit('searchRarity', this.value)
                 },
                 showAuto() {
-                    document.getElementById('autoName').style.visibility='visible';
+                    document.getElementById('autoRare').style.visibility='visible';
                 },
                 // hideAuto() {
                 //     document.getElementById('autoName').style.visibility='hidden';
                 // },
                 autoName(name) {
                     this.value=name
-                    this.$emit('searchName', this.value)
+                    this.$emit('searchRarity', this.value)
                 }
 
+            },
+            created() {
             },
             data() {
                 return {
                     value:'',
                     auto:[],
+                    raritiesArr: this.rarities
                 }
             },
             components: {
                 
-            }
+            },
+            props: ['rarities'],
         }
 </script>
 
